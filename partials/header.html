@@ -1,0 +1,53 @@
+<header class="site-header" aria-label="Site header">
+  <div class="container">
+    <a class="brand brand--link" href="./index.html" aria-label="Maya Poetry Book Awards home">
+      <span class="brand__mark" aria-hidden="true"
+        ><img class="brand__icon" src="./assets/red-raised-fist.png" alt=""
+      /></span>
+      <span class="brand__name">Maya</span>
+    </a>
+
+    <button class="navToggle" type="button" aria-controls="site-nav" aria-expanded="false">
+      <span class="navToggle__icon" aria-hidden="true"></span>
+      <span class="navToggle__label">Menu</span>
+    </button>
+
+    <nav id="site-nav" class="nav" aria-label="Primary">
+      <div class="nav__top">
+        <span class="nav__title">Menu</span>
+        <button class="navClose" type="button">Close</button>
+      </div>
+      <a class="nav__link nav__link--real nav__link--home" href="./index.html">Home</a>
+      <a class="nav__link nav__link--real" href="./enter.html">Enter Your Book</a>
+      <a class="nav__link nav__link--real" href="./judge.html">Our Judge</a>
+      <div class="nav__dropdown">
+        <div class="nav__link--surround">
+          <a href="./past-winners.html">
+            Past Winners
+          </a>
+          <button
+            class="nav__dropdownToggle"
+            type="button"
+            aria-label="Toggle past winners years"
+            aria-expanded="false"
+            data-dropdown-toggle
+          >
+            <span class="nav__dropdownArrow" aria-hidden="true">▾</span>
+          </button>
+        </div>
+        <div class="nav__dropdownMenu" aria-label="Past winners years">
+          <a class="nav__sublink" href="/past-winners/2025">2025 Winners</a>
+          <a class="nav__sublink" href="/past-winners/2025">2024 Winners</a>
+          <a class="nav__sublink" href="/past-winners/2025">2023 Winners</a>
+          <a class="nav__sublink" href="/past-winners/2025">2022 Winners</a>
+          <a class="nav__sublink" href="/past-winners/2025">2021 Winners</a>
+          <a class="nav__sublink" href="/past-winners/2025">2020 Winners</a>
+        </div>
+      </div>
+      <a class="nav__link" href="#faq" data-faq-link>FAQ</a>
+      <a class="nav__link" href="#contact-form" data-contact-link>Contact Us</a>
+    </nav>
+  </div>
+</header>
+<div class="navOverlay" hidden></div>
+

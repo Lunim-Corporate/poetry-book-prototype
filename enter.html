@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maya Poetry Book Awards — Enter Your Book</title>
+    <link rel="stylesheet" href="./styles/variables.css" />
+    <link rel="stylesheet" href="./styles/reset.css" />
+    <link rel="stylesheet" href="./styles/navigation.css" />
+    <link rel="stylesheet" href="./styles/layout.css" />
+    <link rel="stylesheet" href="./styles/components.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div data-include="./partials/header.html"></div>
+
+    <main id="main">
+      <section class="hero" aria-label="Hero">
+        <div class="container">
+          <div class="hero__inner">
+            <h1 class="hero__title">Enter Your Book</h1>
+            <p class="hero__subtitle">
+              1st Prize: £800, 2nd Prize: £400, 3rd Prize: £200, Children Prize: £200.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="after-hero container" aria-label="Entry steps">
+        <div class="wizardSteps">
+          <div class="wizardSteps__circles" aria-hidden="true">
+            <span class="wizardSteps__line wizardSteps__line1"></span>
+            <span class="wizardSteps__line wizardSteps__line2"></span>
+            <div class="wizardStep">
+              <div class="wizardStep__circle wizardStep__circle--active wizardStep__circle--step1">Step 1</div>
+              <p class="wizardStep__label wizardStep__label--left">
+                <span class="wizardStep__labelText wizardStep__labelText--desktop">Enter your details<br />and number of books</span>
+                <span class="wizardStep__labelText wizardStep__labelText--mobile">Enter details</span>
+              </p>
+            </div>
+            <div class="wizardStep">
+              <div class="wizardStep__circle wizardStep__circle--step2">Step 2</div>
+              <p class="wizardStep__label wizardStep__label--center">
+                <span class="wizardStep__labelText wizardStep__labelText--desktop">Enter card details<br />and pay</span>
+                <span class="wizardStep__labelText wizardStep__labelText--mobile">Pay</span>
+              </p>
+            </div>
+            <div class="wizardStep">
+              <div class="wizardStep__circle wizardStep__circle--step3">Step 3</div>
+              <p class="wizardStep__label wizardStep__label--right">
+                <span class="wizardStep__labelText wizardStep__labelText--desktop">Print out the label<br />and send your book/s</span>
+                <span class="wizardStep__labelText wizardStep__labelText--mobile">Send book/s</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="formContainer">
+          <aside class="wizardSteps__form contactCard sketch-card" aria-label="Entry form">
+            <h2 class="cardTitle">Enter Details</h2>
+            <form class="form" action="#" method="post">
+              <label class="label" for="entry-name">Name</label>
+              <input id="entry-name" name="name" type="text" autocomplete="name" required />
+
+              <label class="label" for="entry-email">Email address</label>
+              <input id="entry-email" name="email" type="email" inputmode="email" autocomplete="email" required />
+
+              <p class="label">Number of books you'd like to enter</p>
+              <label class="checkRow" for="entry-books-1">
+                <input id="entry-books-1" name="bookCount" type="radio" value="1" required />
+                <span>One book: £40 GBP</span>
+              </label>
+              <label class="checkRow" for="entry-books-2">
+                <input id="entry-books-2" name="bookCount" type="radio" value="2" />
+                <span>Two books: £70 GBP</span>
+              </label>
+              <label class="checkRow" for="entry-books-3">
+                <input id="entry-books-3" name="bookCount" type="radio" value="3" />
+                <span>Three books: £105 GBP</span>
+              </label>
+              <label class="checkRow" for="entry-books-4">
+                <input id="entry-books-4" name="bookCount" type="radio" value="4" />
+                <span>Four books: £140 GBP</span>
+              </label>
+              <label class="checkRow" for="entry-books-5">
+                <input id="entry-books-5" name="bookCount" type="radio" value="5" />
+                <span>Five books: £175 GBP</span>
+              </label>
+              <label class="checkRow checkRow--s6" for="entry-books-6">
+                <input id="entry-books-6" name="bookCount" type="radio" value="6" />
+                <span>Six books: £210 GBP</span>
+              </label>
+
+              <button class="btn btn--full" type="submit">
+                <span class="btn__spinner" aria-hidden="true"></span>
+                <span class="btn__label">Continue to pay</span>
+              </button>
+            </form>
+          </aside>
+        </div>
+      </section>
+    </main>
+    <div data-include="./partials/footer.html"></div>
+    <script src="./scripts/site.js" defer></script>
+  </body>
+</html>
+

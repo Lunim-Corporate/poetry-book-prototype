@@ -1,0 +1,248 @@
+.hero {
+  margin: 0;
+  padding: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.03),
+      rgba(0, 0, 0, 0.03) 1px,
+      rgba(0, 0, 0, 0) 10px,
+      rgba(0, 0, 0, 0) 18px
+    ),
+    var(--paper);
+  border-bottom: 1px solid var(--stroke);
+  display: flex;
+  align-items: center;
+}
+
+.hero {
+  height: 320px;
+}
+
+.hero--home {
+  height: auto;
+  min-height: 460px;
+}
+
+.hero--small {
+  height: 120px;
+}
+
+.hero.hero--small {
+  height: 120px;
+}
+
+.hero .container {
+  padding: 0 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.hero__inner {
+  max-width: 62ch;
+  text-align: center;
+  padding: 0;
+}
+
+.hero__title {
+  margin: 0.35rem 0 0.4rem;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.15;
+}
+
+.hero__subtitle {
+  margin: 0 0 1.1rem;
+  color: var(--muted);
+  font-size: 1.02rem;
+}
+
+.hero__ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.after-hero {
+  padding: 1rem 0 2.25rem;
+}
+
+.after-hero--home {
+  padding-top: 2rem;
+}
+
+.two-col {
+  display: grid;
+  /* No vertical gap between stacked rows; keep horizontal spacing. */
+  row-gap: 0;
+  column-gap: var(--gutter);
+}
+
+.rightCol {
+  display: grid;
+  gap: var(--gutter);
+}
+
+/* Mobile: newsletter directly below hero (it appears first in DOM). */
+.newsletter,
+.contactCard,
+.content {
+  /* Extra padding so content sits comfortably inside the inner dashed frame. */
+  padding: 1.55rem 1.55rem;
+}
+
+.content {
+  /* Extra padding so content sits comfortably inside the inner dashed frame. */
+  margin-bottom: var(--gutter);
+  padding: 1.55rem .875rem;
+}
+
+.content--plain {
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+@media (min-width: 900px) {
+  .two-col {
+    grid-template-columns: 2.09fr 0.91fr;
+    align-items: start;
+  }
+
+  /* Desktop: right column stack. */
+  .rightCol {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .content {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .contentStack .content {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  /* Home page: full-width title row, then aligned columns below. */
+  .two-col--home {
+    grid-template-rows: auto auto;
+    /* Increase space to the right column by shrinking it (keeps main column effectively the same). */
+    grid-template-columns: 2fr 0.9fr;
+    column-gap: calc(var(--gutter) * 2);
+  }
+
+  .two-col--home .homeMainTitle {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .two-col--home > .content {
+    grid-row: 2;
+  }
+
+  .two-col--home .rightCol {
+    grid-row: 2;
+  }
+
+  .two-col--home .contentStack {
+    grid-column: 1;
+    grid-row: 2;
+    display: grid;
+    gap: var(--gutter);
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(16, 16, 16, 0.75);
+}
+
+.pageTitle {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 1.9rem;
+  line-height: 1.15;
+}
+
+.bodyCopy {
+  margin: 0;
+  font-size: 1.02rem;
+  color: var(--muted);
+  max-width: 68ch;
+}
+
+.content h2 {
+  margin: 0.15rem 0 0.6rem;
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+.content h3 {
+  margin: 1.1rem 0 0.4rem;
+  font-size: 1.15rem;
+}
+
+.content p,
+.content ul {
+  margin: 0 0 0.9rem;
+  color: var(--muted);
+}
+
+.content ul {
+  padding-left: 1.25rem;
+}
+
+.content li + li {
+  margin-top: 0.4rem;
+}
+
+.homeMainTitle h2 {
+  margin: 0.15rem 0 0.9rem;
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+.aboutColumns {
+  display: grid;
+  gap: var(--gutter);
+  margin-bottom: calc(var(--gutter) * 2);
+  align-items: start;
+}
+
+.aboutColumns > * {
+  /* Allow grid children to shrink within columns (prevents overflow). */
+  min-width: 0;
+}
+
+@media (min-width: 729px) {
+  .aboutColumns {
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--gutter) * 2);
+    position: relative;
+  }
+
+  .aboutColumns::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(16, 16, 16, 0.22);
+    pointer-events: none;
+  }
+
+  .aboutCol > h3:first-child {
+    margin-top: 0;
+  }
+}
+
+.contentCta {
+  margin-top: 1.1rem;
+}

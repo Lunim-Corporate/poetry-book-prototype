@@ -1,0 +1,14 @@
+:root {
+  --bg: #ffffff;
+  --ink: #101010;
+  --muted: #3c3c3c;
+  --paper: #fbfbfb;
+  --stroke: #151515;
+  --stroke-soft: rgba(16, 16, 16, 0.35);
+  --radius: 14px;
+  --shadow: 2px 2px 0 var(--stroke);
+  --shadow-soft: 1px 1px 0 var(--stroke-soft);
+  --container: 1080px;
+  --gutter: 1.5rem;
+  --header-height: 70px;
+}
