@@ -2,23 +2,25 @@
   <h2 class="cardTitle">Newsletter</h2>
   <p class="muted">Want to be kept informed? No spam - just relevant updates.</p>
   <form id="newsletter-form" class="form" action="#" method="post" novalidate>
-    <label class="label" for="email">Email</label>
-    <input
-      id="email"
-      name="email"
-      type="email"
-      inputmode="email"
-      autocomplete="email"
-      placeholder="you@example.com"
-      required
-    />
+    <div class="form__row">
+      <label class="label label--text" for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        placeholder="you@example.com"
+        required
+      />
+      <p class="formError" data-error-for="email" role="alert" hidden>
+        Please enter a valid email address.
+      </p>
+    </div>
     <button id="newsletter-submit" class="btn btn--full" type="submit">
       <span class="btn__spinner" aria-hidden="true"></span>
       <span class="btn__label">Sign up</span>
     </button>
-    <p class="formError" data-newsletter-error role="alert" hidden>
-      Please enter a valid email address before continuing.
-    </p>
     <p class="fineprint">By signing up, you agree to receive emails. You can unsubscribe at any time.</p>
   </form>
 </aside>

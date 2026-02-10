@@ -2,23 +2,37 @@
   <h2 class="cardTitle">Contact Us</h2>
   <p class="muted">Send us a message and we’ll get back to you.</p>
   <form class="form" action="#" method="post" novalidate>
-    <label class="label" for="contact-name">Name</label>
-    <input id="contact-name" name="name" type="text" autocomplete="name" required />
+    <div class="form__row">
+      <label class="label label--text" for="contact-name">Name</label>
+      <input id="contact-name" name="name" type="text" autocomplete="name" required />
+      <p class="formError" data-error-for="contact-name" role="alert" hidden>
+        Please enter your name.
+      </p>
+    </div>
 
-    <label class="label" for="contact-email">Email</label>
-    <input id="contact-email" name="email" type="email" inputmode="email" autocomplete="email" required />
+    <div class="form__row">
+      <label class="label label--text" for="contact-email">Email</label>
+      <input id="contact-email" name="email" type="email" inputmode="email" autocomplete="email" required />
+      <p class="formError" data-error-for="contact-email" role="alert" hidden>
+        Please enter a valid email address.
+      </p>
+    </div>
 
-    <label class="label" for="contact-message">Message</label>
-    <textarea id="contact-message" name="message" rows="5" required></textarea>
+    <div class="form__row">
+      <label class="label label--text" for="contact-message">Message</label>
+      <textarea id="contact-message" name="message" rows="5" required></textarea>
+      <p class="formError" data-error-for="contact-message" role="alert" hidden>
+        Please enter a message.
+      </p>
+    </div>
 
-    <label class="checkRow" for="contact-newsletter">
-      <input id="contact-newsletter" name="newsletter" type="checkbox" />
-      <span>Sign me up to your newsletter</span>
-    </label>
+    <div class="form__row">
+      <label class="checkRow" for="contact-newsletter">
+        <input id="contact-newsletter" name="newsletter" type="checkbox" />
+        <span>Sign me up to your newsletter</span>
+      </label>
+    </div>
 
-    <p class="formError" data-contact-error role="alert" hidden>
-      Please complete all required fields before continuing.
-    </p>
     <button id="contact-submit" class="btn btn--full" type="submit">
       <span class="btn__spinner" aria-hidden="true"></span>
       <span class="btn__label">Send message</span>

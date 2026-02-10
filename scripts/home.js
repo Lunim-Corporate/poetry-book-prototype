@@ -3,23 +3,32 @@ function initNewsletterSignup() {
   const newsletterForm = document.getElementById("newsletter-form");
   const emailInput = document.getElementById("email");
   const submitBtn = document.getElementById("newsletter-submit");
-  const errorEl = newsletterForm?.querySelector("[data-newsletter-error]");
+  const showFieldErrors = (form) => {
+    if (!form) return false;
+    form.querySelectorAll(".formError").forEach((error) => {
+      error.hidden = true;
+    });
+    const invalidFields = form.querySelectorAll(":invalid");
+    invalidFields.forEach((field) => {
+      const error = form.querySelector(`[data-error-for="${field.id}"]`);
+      if (error) error.hidden = false;
+    });
+    invalidFields[0]?.focus();
+    return invalidFields.length === 0;
+  };
 
   if (!newsletterEl || !newsletterForm || !emailInput || !submitBtn) return;
 
   emailInput.addEventListener("input", () => {
-    if (errorEl) errorEl.hidden = true;
+    newsletterForm?.querySelectorAll(".formError").forEach((error) => {
+      error.hidden = true;
+    });
   });
 
   newsletterForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (!emailInput.checkValidity()) {
-      if (errorEl) errorEl.hidden = false;
-      emailInput.focus();
-      return;
-    }
-    if (errorEl) errorEl.hidden = true;
+    if (!showFieldErrors(newsletterForm)) return;
 
     const emailAddress = String(emailInput.value || "").trim();
     const capturedEmailAddress = emailAddress;
@@ -60,24 +69,33 @@ function initContactForm() {
   const emailInput = document.getElementById("contact-email");
   const newsletterCheckbox = document.getElementById("contact-newsletter");
   const submitBtn = document.getElementById("contact-submit") || contactCard.querySelector("button[type=\"submit\"]");
-  const errorEl = contactCard.querySelector("[data-contact-error]");
+  const showFieldErrors = (formEl) => {
+    if (!formEl) return false;
+    formEl.querySelectorAll(".formError").forEach((error) => {
+      error.hidden = true;
+    });
+    const invalidFields = formEl.querySelectorAll(":invalid");
+    invalidFields.forEach((field) => {
+      const error = formEl.querySelector(`[data-error-for="${field.id}"]`);
+      if (error) error.hidden = false;
+    });
+    invalidFields[0]?.focus();
+    return invalidFields.length === 0;
+  };
 
   if (!form || !emailInput || !submitBtn) return;
 
   form.addEventListener("input", () => {
-    if (errorEl) errorEl.hidden = true;
+    form.querySelectorAll(".formError").forEach((error) => {
+      error.hidden = true;
+    });
   });
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     // Validate all required fields (name/email/message)
-    if (!form.checkValidity()) {
-      if (errorEl) errorEl.hidden = false;
-      form.querySelector(":invalid")?.focus();
-      return;
-    }
-    if (errorEl) errorEl.hidden = true;
+    if (!showFieldErrors(form)) return;
 
     const emailAddress = String(emailInput.value || "").trim();
     const wantsNewsletter = Boolean(newsletterCheckbox && newsletterCheckbox.checked);

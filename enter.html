@@ -55,8 +55,8 @@
             <div class="wizardStep">
               <div class="wizardStep__circle wizardStep__circle--step4">Step 4</div>
               <p class="wizardStep__label wizardStep__label--right">
-                <span class="wizardStep__labelText wizardStep__labelText--desktop">Print label and<br />send your book/s</span>
-                <span class="wizardStep__labelText wizardStep__labelText--mobile">Send book/s</span>
+                <span class="wizardStep__labelText wizardStep__labelText--desktop">Print label and<br />post your book/s</span>
+                <span class="wizardStep__labelText wizardStep__labelText--mobile">Post book/s</span>
               </p>
             </div>
           </div>
@@ -66,40 +66,62 @@
           <aside class="wizardSteps__form contactCard sketch-card" aria-label="Entry form">
             <h2 class="cardTitle">Enter Details</h2>
             <form class="form" action="#" method="post" novalidate>
-              <label class="label" for="entry-name">Name</label>
-              <input id="entry-name" name="name" type="text" autocomplete="name" required />
+              <div class="form__row">
+                <label class="label label--text" for="entry-name">Name</label>
+                <input id="entry-name" name="name" type="text" autocomplete="name" required />
+                <p class="formError" data-error-for="entry-name" role="alert" hidden>
+                  Please enter your name.
+                </p>
+              </div>
 
-              <label class="label" for="entry-email">Email address</label>
-              <input id="entry-email" name="email" type="email" inputmode="email" autocomplete="email" required />
+              <div class="form__row">
+                <label class="label label--text" for="entry-email">Email address</label>
+                <input id="entry-email" name="email" type="email" inputmode="email" autocomplete="email" required />
+                <p class="formError" data-error-for="entry-email" role="alert" hidden>
+                  Please enter a valid email address.
+                </p>
+              </div>
 
               <p class="label">Number of books you'd like to enter</p>
-              <label class="checkRow" for="entry-books-1">
-                <input id="entry-books-1" name="bookCount" type="radio" value="1" required />
-                <span>One book: £40 GBP</span>
-              </label>
-              <label class="checkRow" for="entry-books-2">
-                <input id="entry-books-2" name="bookCount" type="radio" value="2" />
-                <span>Two books: £70 GBP</span>
-              </label>
-              <label class="checkRow" for="entry-books-3">
-                <input id="entry-books-3" name="bookCount" type="radio" value="3" />
-                <span>Three books: £105 GBP</span>
-              </label>
-              <label class="checkRow" for="entry-books-4">
-                <input id="entry-books-4" name="bookCount" type="radio" value="4" />
-                <span>Four books: £140 GBP</span>
-              </label>
-              <label class="checkRow" for="entry-books-5">
-                <input id="entry-books-5" name="bookCount" type="radio" value="5" />
-                <span>Five books: £175 GBP</span>
-              </label>
-              <label class="checkRow checkRow--s6" for="entry-books-6">
-                <input id="entry-books-6" name="bookCount" type="radio" value="6" />
-                <span>Six books: £210 GBP</span>
-              </label>
+              <div class="form__row">
+                <label class="checkRow" for="entry-books-1">
+                  <input id="entry-books-1" name="bookCount" type="radio" value="1" required />
+                  <span>One book: £40 GBP</span>
+                </label>
+              </div>
+              <div class="form__row">
+                <label class="checkRow" for="entry-books-2">
+                  <input id="entry-books-2" name="bookCount" type="radio" value="2" />
+                  <span>Two books: £70 GBP</span>
+                </label>
+              </div>
+              <div class="form__row">
+                <label class="checkRow" for="entry-books-3">
+                  <input id="entry-books-3" name="bookCount" type="radio" value="3" />
+                  <span>Three books: £105 GBP</span>
+                </label>
+              </div>
+              <div class="form__row">
+                <label class="checkRow" for="entry-books-4">
+                  <input id="entry-books-4" name="bookCount" type="radio" value="4" />
+                  <span>Four books: £140 GBP</span>
+                </label>
+              </div>
+              <div class="form__row">
+                <label class="checkRow" for="entry-books-5">
+                  <input id="entry-books-5" name="bookCount" type="radio" value="5" />
+                  <span>Five books: £175 GBP</span>
+                </label>
+              </div>
+              <div class="form__row">
+                <label class="checkRow checkRow--s6" for="entry-books-6">
+                  <input id="entry-books-6" name="bookCount" type="radio" value="6" />
+                  <span>Six books: £210 GBP</span>
+                </label>
+              </div>
 
-              <p class="formError" data-step2-error role="alert" hidden>
-                Please complete all required fields before continuing.
+              <p class="formError" data-error-for="entry-books-1" role="alert" hidden>
+                Please select how many books you'd like to enter.
               </p>
               <button class="btn btn--full" type="submit">
                 <span class="btn__spinner" aria-hidden="true"></span>

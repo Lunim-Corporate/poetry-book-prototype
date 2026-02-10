@@ -318,7 +318,7 @@ function initEntryWizard() {
   };
 
   const getPaymentLabel = () => {
-    return `Pay ${getPaymentAmount()} and continue to send ${getBookLabel()}`;
+    return `Pay ${getPaymentAmount()} and continue to post ${getBookLabel()}`;
   };
 
   const updateStep4Label = () => {
@@ -332,6 +332,20 @@ function initEntryWizard() {
     if (step4LabelMobile) {
       step4LabelMobile.textContent = `Post ${getBookLabel()}`;
     }
+  };
+
+  const showFieldErrors = (formEl) => {
+    if (!formEl) return false;
+    formEl.querySelectorAll(".formError").forEach((error) => {
+      error.hidden = true;
+    });
+    const invalidFields = formEl.querySelectorAll(":invalid");
+    invalidFields.forEach((field) => {
+      const error = formEl.querySelector(`[data-error-for="${field.id}"]`);
+      if (error) error.hidden = false;
+    });
+    invalidFields[0]?.focus();
+    return invalidFields.length === 0;
   };
 
   const setDemoValues = () => {
@@ -483,13 +497,7 @@ function initEntryWizard() {
     step2Form?.addEventListener("submit", (e) => {
       e.preventDefault();
       const selected = step2Form.querySelector('input[name="bookCount"]:checked');
-      const step2Error = formCard.querySelector("[data-step2-error]");
-      if (!step2Form.checkValidity() || !selected) {
-        if (step2Error) step2Error.hidden = false;
-        step2Form.querySelector(":invalid")?.focus();
-        return;
-      }
-      if (step2Error) step2Error.hidden = true;
+      if (!showFieldErrors(step2Form) || !selected) return;
       step2Complete = true;
       captureStep1Values(step2Form);
       selectedLabel =
@@ -534,10 +542,12 @@ function initEntryWizard() {
       </ul>
 
       <div class="wizardSteps__confirm">
-        <label class="checkRow" for="rules-confirm">
-          <input id="rules-confirm" name="rulesConfirm" type="checkbox" />
-          <span>I confirm I have read and understood the rules of the competition</span>
-        </label>
+        <div class="form__row">
+          <label class="checkRow" for="rules-confirm">
+            <input id="rules-confirm" name="rulesConfirm" type="checkbox" />
+            <span>I confirm I have read and understood the rules of the competition</span>
+          </label>
+        </div>
       </div>
       <p class="formError" data-rules-error role="alert" hidden>
         Please confirm you have read and understood the rules before continuing.
@@ -571,7 +581,7 @@ function initEntryWizard() {
     if (shouldScroll) scrollToWizardSteps();
   };
 
-  const renderStep2 = () => {
+  const renderStep2 = (shouldScroll = true) => {
     isWizardLocked = false;
     visitedSteps.add("step2");
     setActive(step2);
@@ -590,12 +600,12 @@ function initEntryWizard() {
       e.preventDefault();
       const step2Form = formCard.querySelector("form");
       if (step2Form) captureStep1Values(step2Form);
-      renderStep1();
+      renderStep1(false);
     });
-    scrollToWizardSteps();
+    if (shouldScroll) scrollToWizardSteps();
   };
 
-  const renderStep3 = () => {
+  const renderStep3 = (shouldScroll = true) => {
     isWizardLocked = false;
     visitedSteps.add("step3");
     setActive(step3);
@@ -605,30 +615,52 @@ function initEntryWizard() {
       <a class="wizardSteps__back" href="#" data-back="2">&laquo; Back to step 2</a>
       <form class="form" action="#" method="post" novalidate>
         <h3>Card details</h3>
-        <label class="label" for="card-number">Card number</label>
-        <input id="card-number" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" required />
+        <div class="form__row">
+          <label class="label label--text" for="card-number">Card number</label>
+          <input id="card-number" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" required />
+          <p class="formError" data-error-for="card-number" role="alert" hidden>
+            Please enter your card number.
+          </p>
+        </div>
 
         <div class="formRow formRow--split">
           <div class="formRow__item">
-            <label class="label" for="card-expiry">Expiry date</label>
-            <input id="card-expiry" name="cardExpiry" type="text" autocomplete="cc-exp" required />
+            <div class="form__row">
+              <label class="label label--text" for="card-expiry">Expiry date</label>
+              <input id="card-expiry" name="cardExpiry" type="text" autocomplete="cc-exp" required />
+              <p class="formError" data-error-for="card-expiry" role="alert" hidden>
+                Please enter your expiry date.
+              </p>
+            </div>
           </div>
           <div class="formRow__item">
-            <label class="label" for="card-cvc">Security code</label>
-            <input id="card-cvc" name="cardCvc" type="text" inputmode="numeric" autocomplete="cc-csc" required />
+            <div class="form__row">
+              <label class="label label--text" for="card-cvc">Security code</label>
+              <input id="card-cvc" name="cardCvc" type="text" inputmode="numeric" autocomplete="cc-csc" required />
+              <p class="formError" data-error-for="card-cvc" role="alert" hidden>
+                Please enter your security code.
+              </p>
+            </div>
           </div>
         </div>
 
         <h3>Billing address</h3>
-        <label class="label" for="billing-street">Street and town</label>
-        <textarea id="billing-street" name="billingStreet" rows="2" required></textarea>
+        <div class="form__row">
+          <label class="label label--text" for="billing-street">Street and town</label>
+          <textarea id="billing-street" name="billingStreet" rows="2" required></textarea>
+          <p class="formError" data-error-for="billing-street" role="alert" hidden>
+            Please enter your street and town.
+          </p>
+        </div>
 
-        <label class="label" for="billing-postcode">Postcode</label>
-        <input class="input--half" id="billing-postcode" name="billingPostcode" type="text" autocomplete="postal-code" required />
+        <div class="form__row">
+          <label class="label label--text" for="billing-postcode">Postcode</label>
+          <input class="input--half" id="billing-postcode" name="billingPostcode" type="text" autocomplete="postal-code" required />
+          <p class="formError" data-error-for="billing-postcode" role="alert" hidden>
+            Please enter your postcode.
+          </p>
+        </div>
         <div class="formSpacer"></div>
-        <p class="formError" data-step3-error role="alert" hidden>
-          Please complete all required fields before continuing.
-        </p>
         <button class="btn btn--full" type="submit">
           <span class="btn__spinner" aria-hidden="true"></span>
           <span class="btn__label">${getPaymentLabel()}</span>
@@ -643,20 +675,14 @@ function initEntryWizard() {
       e.preventDefault();
       const step3Form = formCard.querySelector("form");
       if (step3Form) captureStep2Values(step3Form);
-      renderStep2();
+      renderStep2(false);
     });
 
     formCard.querySelector("form")?.addEventListener("submit", (e) => {
       e.preventDefault();
       const step3Form = formCard.querySelector("form");
-      const step3Error = formCard.querySelector("[data-step3-error]");
       if (!step3Form) return;
-      if (!step3Form.checkValidity()) {
-        if (step3Error) step3Error.hidden = false;
-        step3Form.querySelector(":invalid")?.focus();
-        return;
-      }
-      if (step3Error) step3Error.hidden = true;
+      if (!showFieldErrors(step3Form)) return;
       step3Complete = true;
       captureStep2Values(step3Form);
       renderStep4();
@@ -664,10 +690,10 @@ function initEntryWizard() {
 
     const step3Form = formCard.querySelector("form");
     if (step3Form) applyStep2Values(step3Form);
-    scrollToWizardSteps();
+    if (shouldScroll) scrollToWizardSteps();
   };
 
-  const renderStep4 = () => {
+  const renderStep4 = (shouldScroll = true) => {
     visitedSteps.add("step4");
     isWizardLocked = true;
     setActive(step4);
@@ -690,7 +716,17 @@ function initEntryWizard() {
           </p>
         </div>
         <div class="wizardSteps__labelPayment">
-          <h3>Reference</h3>
+          <div class="wizardSteps__labelHeader">
+            <h3>Reference</h3>
+            <div class="wizardSteps__tooltipWrap">
+              <button class="wizardSteps__tooltip" type="button" aria-label="Reference info" data-tooltip-trigger>
+                <span aria-hidden="true">⚙</span>
+              </button>
+              <div class="wizardSteps__tooltipContent" role="tooltip" hidden>
+                When it comes to implementing the "point the phone's camera at the QR code to confirm receipt" functionality for the organiser, make sure this only works for a signed in and authorised user.
+              </div>
+            </div>
+          </div>
           <div class="wizardSteps__qr">
             <img src="./assets/qr-code.png" alt="QR code" />
           </div>
@@ -709,7 +745,14 @@ function initEntryWizard() {
     formCard.querySelector("button")?.addEventListener("click", (e) => {
       e.preventDefault();
     });
-    scrollToWizardSteps();
+    const tooltipTrigger = formCard.querySelector("[data-tooltip-trigger]");
+    const tooltipContent = formCard.querySelector(".wizardSteps__tooltipContent");
+    if (tooltipTrigger && tooltipContent) {
+      tooltipTrigger.addEventListener("click", () => {
+        tooltipContent.hidden = !tooltipContent.hidden;
+      });
+    }
+    if (shouldScroll) scrollToWizardSteps();
   };
 
   const captureActiveStepValues = () => {
@@ -756,10 +799,10 @@ function initEntryWizard() {
     }
 
     captureActiveStepValues();
-    if (targetStep === 1) renderStep1();
-    if (targetStep === 2) renderStep2();
-    if (targetStep === 3) renderStep3();
-    if (targetStep === 4) renderStep4();
+    if (targetStep === 1) renderStep1(false);
+    if (targetStep === 2) renderStep2(false);
+    if (targetStep === 3) renderStep3(false);
+    if (targetStep === 4) renderStep4(false);
   };
 
   if (isDemoMode) setDemoValues();

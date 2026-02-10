@@ -132,7 +132,7 @@ ul li {
 
 .form {
   display: grid;
-  gap: 0.55rem;
+  gap: 1.5rem;
 }
 
 .formRow {
@@ -147,7 +147,13 @@ ul li {
 
 .label {
   font-weight: 700;
-  margin-bottom: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.label--text {
+  margin-bottom: 0.4rem;
+  display: inline-block;
 }
 
 .checkRow {
@@ -371,7 +377,7 @@ textarea:focus {
 }
 
 .formContainer h3 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0rem;
 }
 
 .formSpacer {
@@ -486,12 +492,62 @@ textarea:focus {
 }
 
 .wizardSteps__labelPayment h3 {
-  margin: 0 0 0.75rem;
+  margin: 0;
 }
 
 .wizardSteps__labelNumber {
   margin: 0.75rem 0 0;
   font-weight: 800;
+}
+
+.wizardSteps__labelHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.wizardSteps__tooltipWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.wizardSteps__tooltip {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #b85c00;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 2rem;
+}
+
+.wizardSteps__tooltipContent {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  width: min(320px, 70vw);
+  padding: 0.75rem 0.85rem;
+  background: #fff;
+  border: 2px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.wizardSteps__labelPayment {
+  position: relative;
 }
 
 .wizardSteps__form {
@@ -511,7 +567,7 @@ textarea:focus {
 
 .formError,
 .wizardSteps__error {
-  margin: 0 0 0.85rem;
+  margin: 0.4rem 0 0 0;
   color: #8b1e1e;
   font-weight: 700;
 }
