@@ -275,6 +275,11 @@ function initEntryWizard() {
   const step2 = document.querySelector(".wizardStep__circle--step2");
   const step3 = document.querySelector(".wizardStep__circle--step3");
   const step4 = document.querySelector(".wizardStep__circle--step4");
+  const stepsCircles = document.querySelector(".wizardSteps__circles");
+  const step1Label = step1?.closest(".wizardStep")?.querySelector(".wizardStep__label");
+  const step2Label = step2?.closest(".wizardStep")?.querySelector(".wizardStep__label");
+  const step3Label = step3?.closest(".wizardStep")?.querySelector(".wizardStep__label");
+  const step4Label = step4?.closest(".wizardStep")?.querySelector(".wizardStep__label");
   const line1 = document.querySelector(".wizardSteps__line1");
   const line2 = document.querySelector(".wizardSteps__line2");
   const line3 = document.querySelector(".wizardSteps__line3");
@@ -298,6 +303,10 @@ function initEntryWizard() {
 
   const visitedSteps = new Set(["step1"]);
   let isWizardLocked = false;
+  let step1Complete = false;
+  let step2Complete = false;
+  let step3Complete = false;
+  const isDemoMode = new URLSearchParams(window.location.search).has("demo");
   const getBookLabel = () => {
     const count = Number.parseInt(step1Values.bookCount, 10);
     return Number.isNaN(count) || count === 1 ? "book" : "books";
@@ -305,7 +314,7 @@ function initEntryWizard() {
 
   const getPaymentAmount = () => {
     const amountMatch = selectedLabel.match(/£\s*\d+(?:\.\d{1,2})?/i);
-    return amountMatch ? amountMatch[0].replace(/\s+/g, " ").trim() : "£0";
+    return amountMatch ? amountMatch[0].replace(/\s+/g, " ").trim() : "fee";
   };
 
   const getPaymentLabel = () => {
@@ -318,38 +327,98 @@ function initEntryWizard() {
       ?.closest(".wizardStep")
       ?.querySelector(".wizardStep__labelText--mobile");
     if (step4Label) {
-      step4Label.textContent = `Print out the label and send your ${getBookLabel()}`;
+      step4Label.textContent = `Print out label and post your ${getBookLabel()}`;
     }
     if (step4LabelMobile) {
-      step4LabelMobile.textContent = `Send ${getBookLabel()}`;
+      step4LabelMobile.textContent = `Post ${getBookLabel()}`;
     }
   };
 
+  const setDemoValues = () => {
+    step1Values.name = "Demo Author";
+    step1Values.email = "demo@example.com";
+    step1Values.bookCount = "2";
+    selectedLabel = "Two books: £70 GBP";
+    step2Values.billingStreet = "123 Demo Street\nDemo Town";
+    step2Values.billingPostcode = "DE1 2MO";
+    step2Values.cardNumber = "4111 1111 1111 1111";
+    step2Values.cardExpiry = "12/28";
+    step2Values.cardCvc = "123";
+    step1Complete = true;
+    step2Complete = true;
+    step3Complete = true;
+    visitedSteps.add("step2");
+    visitedSteps.add("step3");
+    updateStep4Label();
+  };
+
+  const wizardModal = document.createElement("div");
+  wizardModal.className = "wizardModal";
+  wizardModal.hidden = true;
+  wizardModal.innerHTML = `
+    <div class="wizardModal__overlay" data-modal-close></div>
+    <div class="wizardModal__dialog" role="dialog" aria-modal="true" aria-live="polite">
+      <p class="wizardModal__message" data-modal-message></p>
+      <div class="wizardModal__actions">
+        <button class="btn" type="button" data-modal-close>Understood</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(wizardModal);
+  const modalMessage = wizardModal.querySelector("[data-modal-message]");
+  const closeModal = () => {
+    wizardModal.hidden = true;
+  };
+  wizardModal.querySelectorAll("[data-modal-close]").forEach((closeBtn) => {
+    closeBtn.addEventListener("click", closeModal);
+  });
+  const showWizardModal = (message) => {
+    if (modalMessage) modalMessage.textContent = message;
+    wizardModal.hidden = false;
+  };
+  const getClickTapLabel = () =>
+    window.matchMedia("(max-width: 728px)").matches ? "tap" : "click";
+
+  const scrollToWizardSteps = () => {
+    if (!stepsCircles) return;
+    const scrollToTarget = (behavior) => {
+      const offset = 80;
+      const top = window.scrollY + stepsCircles.getBoundingClientRect().top - offset;
+      window.scrollTo({ top, left: 0, behavior });
+    };
+
+    requestAnimationFrame(() => {
+      scrollToTarget("smooth");
+      window.setTimeout(() => scrollToTarget("auto"), 140);
+    });
+  };
+
   const updateClickable = () => {
-    if (isWizardLocked) {
-      step1.classList.remove("wizardStep__circle--clickable");
-      step2.classList.remove("wizardStep__circle--clickable");
-      step3.classList.remove("wizardStep__circle--clickable");
-      step4.classList.remove("wizardStep__circle--clickable");
-      step1.classList.add("wizardStep__circle--visited");
-      step2.classList.add("wizardStep__circle--visited");
-      step3.classList.add("wizardStep__circle--visited");
-      step4.classList.add("wizardStep__circle--visited");
-      line1.classList.add("wizardSteps__line--complete");
-      line2.classList.add("wizardSteps__line--complete");
-      line3.classList.add("wizardSteps__line--complete");
-      return;
-    }
     const step1Active = step1.classList.contains("wizardStep__circle--active");
     const step2Active = step2.classList.contains("wizardStep__circle--active");
     const step3Active = step3.classList.contains("wizardStep__circle--active");
-    step1.classList.toggle("wizardStep__circle--clickable", visitedSteps.has("step1") && !step1Active);
-    step2.classList.toggle("wizardStep__circle--clickable", visitedSteps.has("step2") && !step2Active);
-    step3.classList.toggle("wizardStep__circle--clickable", visitedSteps.has("step3") && !step3Active);
+    const step4Active = step4.classList.contains("wizardStep__circle--active");
+    const step1Clickable = !step1Active;
+    const step2Clickable = !step2Active;
+    const step3Clickable = !step3Active;
+    const step4Clickable = !step4Active;
+    step1.classList.toggle("wizardStep__circle--clickable", step1Clickable);
+    step2.classList.toggle("wizardStep__circle--clickable", step2Clickable);
+    step3.classList.toggle("wizardStep__circle--clickable", step3Clickable);
+    step4.classList.toggle("wizardStep__circle--clickable", step4Clickable);
+    step1Label?.classList.toggle("wizardStep__label--clickable", step1Clickable);
+    step2Label?.classList.toggle("wizardStep__label--clickable", step2Clickable);
+    step3Label?.classList.toggle("wizardStep__label--clickable", step3Clickable);
+    step4Label?.classList.toggle("wizardStep__label--clickable", step4Clickable);
     step1.classList.toggle("wizardStep__circle--visited", visitedSteps.has("step1"));
     step2.classList.toggle("wizardStep__circle--visited", visitedSteps.has("step2"));
     step3.classList.toggle("wizardStep__circle--visited", visitedSteps.has("step3"));
     step4.classList.toggle("wizardStep__circle--visited", visitedSteps.has("step4"));
+    const lockSteps = isWizardLocked && visitedSteps.has("step4");
+    step1.classList.toggle("wizardStep__circle--locked", lockSteps);
+    step2.classList.toggle("wizardStep__circle--locked", lockSteps);
+    step3.classList.toggle("wizardStep__circle--locked", lockSteps);
+    step4.classList.remove("wizardStep__circle--locked");
     line1.classList.toggle("wizardSteps__line--complete", visitedSteps.has("step2"));
     line2.classList.toggle("wizardSteps__line--complete", visitedSteps.has("step3"));
     line3.classList.toggle("wizardSteps__line--complete", visitedSteps.has("step4"));
@@ -409,14 +478,19 @@ function initEntryWizard() {
   const bindStep2Form = () => {
     const step2Form = formCard.querySelector("form");
     if (!step2Form) return;
+    if (isDemoMode) setDemoValues();
     applyStep1Values(step2Form);
     step2Form?.addEventListener("submit", (e) => {
       e.preventDefault();
       const selected = step2Form.querySelector('input[name="bookCount"]:checked');
-      if (!selected) {
-        step2Form.reportValidity();
+      const step2Error = formCard.querySelector("[data-step2-error]");
+      if (!step2Form.checkValidity() || !selected) {
+        if (step2Error) step2Error.hidden = false;
+        step2Form.querySelector(":invalid")?.focus();
         return;
       }
+      if (step2Error) step2Error.hidden = true;
+      step2Complete = true;
       captureStep1Values(step2Form);
       selectedLabel =
         selected.closest("label")?.querySelector("span")?.textContent?.trim() || "";
@@ -425,14 +499,12 @@ function initEntryWizard() {
     });
   };
 
-  const renderStep1 = () => {
+  const renderStep1 = (shouldScroll = true) => {
     isWizardLocked = false;
     setActive(step1);
+    if (isDemoMode) setDemoValues();
     formCard.innerHTML = `
       <h2 class="cardTitle">Competition Rules</h2>
-      <p>
-        <a href="#" data-continue="1">I know the rules, continue to enter &gt;&gt;</a>
-      </p>
       <p class="muted">Please review the competition rules before submitting your entry.</p>
       <ul>
         <li>This is an international competition and we accept poetry books &amp; pamphlets from anywhere in the world provided all submissions are in English. The competition is open to anyone aged 18 or over at the time of entering.</li>
@@ -446,6 +518,7 @@ function initEntryWizard() {
         <li>Unpublished manuscripts are not accepted and will not be returned. No refund will be issued.</li>
         <li>Entries cannot be returned but all books will be donated to local libraries in south Wales, so your book will have the chance to be read by even more people.</li>
         <li>The Maya Poetry Book Awards holds no responsibility for incomplete or ineligible entries.</li>
+        <li>It is your responsibility to ensure the correct postage is applied to your parcel and to pay for it. Incorrect postage could result in your package being returned to you and possibly in you missing the deadline.</li>
         <li>If posting from overseas (outside the UK), it is exclusively your responsibility to fill out any customs forms and declarations that may be needed.</li>
         <li>All prizes will be paid in pounds sterling by card. The Poetry Book Awards cannot be held responsible for any payment processing or currency conversion fees.</li>
         <li>By entering, you agree that if you win one of our awards, you will send us a photo and short biography for us to post on our website, to share on social media, as well as for any other advertising/press releases.</li>
@@ -460,18 +533,42 @@ function initEntryWizard() {
         <li>By entering this competition, each entrant agrees to be bound by these rules.</li>
       </ul>
 
+      <div class="wizardSteps__confirm">
+        <label class="checkRow" for="rules-confirm">
+          <input id="rules-confirm" name="rulesConfirm" type="checkbox" />
+          <span>I confirm I have read and understood the rules of the competition</span>
+        </label>
+      </div>
+      <p class="formError" data-rules-error role="alert" hidden>
+        Please confirm you have read and understood the rules before continuing.
+      </p>
+
       <button class="btn btn--full" type="button" data-continue="1">
         <span class="btn__spinner" aria-hidden="true"></span>
         <span class="btn__label">Continue to enter details</span>
       </button>
     `;
 
-    formCard.querySelectorAll('[data-continue="1"]').forEach((control) => {
-      control.addEventListener("click", (e) => {
-        e.preventDefault();
-        renderStep2();
-      });
+    if (isDemoMode) {
+      const rulesConfirm = formCard.querySelector("#rules-confirm");
+      const rulesError = formCard.querySelector("[data-rules-error]");
+      if (rulesConfirm) rulesConfirm.checked = true;
+      if (rulesError) rulesError.hidden = true;
+    }
+    formCard.querySelector('[data-continue="1"]')?.addEventListener("click", (e) => {
+      e.preventDefault();
+      const rulesConfirm = formCard.querySelector("#rules-confirm");
+      const rulesError = formCard.querySelector("[data-rules-error]");
+      if (!rulesConfirm?.checked) {
+        if (rulesError) rulesError.hidden = false;
+        rulesConfirm?.focus();
+        return;
+      }
+      if (rulesError) rulesError.hidden = true;
+      step1Complete = true;
+      renderStep2();
     });
+    if (shouldScroll) scrollToWizardSteps();
   };
 
   const renderStep2 = () => {
@@ -479,6 +576,7 @@ function initEntryWizard() {
     visitedSteps.add("step2");
     setActive(step2);
     formCard.innerHTML = step2Html;
+    if (isDemoMode) setDemoValues();
     updateStep4Label();
     const step2Title = formCard.querySelector(".cardTitle");
     if (step2Title) {
@@ -494,6 +592,7 @@ function initEntryWizard() {
       if (step2Form) captureStep1Values(step2Form);
       renderStep1();
     });
+    scrollToWizardSteps();
   };
 
   const renderStep3 = () => {
@@ -504,7 +603,7 @@ function initEntryWizard() {
       <h2 class="cardTitle">Enter card details and pay</h2>
       <p class="muted">${selectedLabel}</p>
       <a class="wizardSteps__back" href="#" data-back="2">&laquo; Back to step 2</a>
-      <form class="form" action="#" method="post">
+      <form class="form" action="#" method="post" novalidate>
         <h3>Card details</h3>
         <label class="label" for="card-number">Card number</label>
         <input id="card-number" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" required />
@@ -527,6 +626,9 @@ function initEntryWizard() {
         <label class="label" for="billing-postcode">Postcode</label>
         <input class="input--half" id="billing-postcode" name="billingPostcode" type="text" autocomplete="postal-code" required />
         <div class="formSpacer"></div>
+        <p class="formError" data-step3-error role="alert" hidden>
+          Please complete all required fields before continuing.
+        </p>
         <button class="btn btn--full" type="submit">
           <span class="btn__spinner" aria-hidden="true"></span>
           <span class="btn__label">${getPaymentLabel()}</span>
@@ -534,6 +636,9 @@ function initEntryWizard() {
       </form>
     `;
 
+    if (isDemoMode) {
+      setDemoValues();
+    }
     formCard.querySelector('[data-back="2"]')?.addEventListener("click", (e) => {
       e.preventDefault();
       const step3Form = formCard.querySelector("form");
@@ -544,12 +649,22 @@ function initEntryWizard() {
     formCard.querySelector("form")?.addEventListener("submit", (e) => {
       e.preventDefault();
       const step3Form = formCard.querySelector("form");
-      if (step3Form) captureStep2Values(step3Form);
+      const step3Error = formCard.querySelector("[data-step3-error]");
+      if (!step3Form) return;
+      if (!step3Form.checkValidity()) {
+        if (step3Error) step3Error.hidden = false;
+        step3Form.querySelector(":invalid")?.focus();
+        return;
+      }
+      if (step3Error) step3Error.hidden = true;
+      step3Complete = true;
+      captureStep2Values(step3Form);
       renderStep4();
     });
 
     const step3Form = formCard.querySelector("form");
     if (step3Form) applyStep2Values(step3Form);
+    scrollToWizardSteps();
   };
 
   const renderStep4 = () => {
@@ -562,8 +677,9 @@ function initEntryWizard() {
       </div>
       <h2 class="cardTitle">Print label and send your ${getBookLabel()}</h2>
       <p class="muted">Click the "Print label" button to print out the details shown below, then stick this on the parcel for the book/s you're sending. Or, if you prefer, copy the details by hand - make sure to include the proof of payment reference.</p>
-      <div class="wizardSteps__labelRow">
+      <div class="wizardSteps__labelGrid">
         <div class="wizardSteps__labelInfo">
+          <h3>Address</h3>
           <p>
             <strong>Maya Poetry Book Awards</strong><br />
             9 The Avenue<br />
@@ -573,20 +689,27 @@ function initEntryWizard() {
             United Kingdom
           </p>
         </div>
-        <div class="wizardSteps__qr">
-          <img src="./assets/qr-code.png" alt="QR code" />
+        <div class="wizardSteps__labelPayment">
+          <h3>Reference</h3>
+          <div class="wizardSteps__qr">
+            <img src="./assets/qr-code.png" alt="QR code" />
+          </div>
+          <p class="wizardSteps__labelNumber">5809147823</p>
         </div>
       </div>
-      <p><strong>Payment reference:</strong> 5809147823</p>
       <button class="btn btn--full" type="submit">
         <span class="btn__spinner" aria-hidden="true"></span>
         <span class="btn__label">Print label</span>
       </button>
+      <p>The reference QR code and number are for the organiser's use only. If printing the label, please keep these elements visible. If manually copying the details, just be sure to write out the reference number.</p>
+      <p>It is your responsibility to ensure the correct postage is applied to your parcel and to pay for it. Incorrect postage could result in your package being returned to you and possibly in you missing the deadline.</li>
+      <p>If posting from overseas (outside the UK), it is exclusively your responsibility to fill out any customs forms and declarations that may be needed.</p>
     `;
 
     formCard.querySelector("button")?.addEventListener("click", (e) => {
       e.preventDefault();
     });
+    scrollToWizardSteps();
   };
 
   const captureActiveStepValues = () => {
@@ -600,43 +723,56 @@ function initEntryWizard() {
     }
   };
 
-  renderStep1();
+  const handleStepClick = (targetStep) => {
+    if (targetStep === 1 && step1.classList.contains("wizardStep__circle--active")) return;
+    if (targetStep === 2 && step2.classList.contains("wizardStep__circle--active")) return;
+    if (targetStep === 3 && step3.classList.contains("wizardStep__circle--active")) return;
+    if (targetStep === 4 && step4.classList.contains("wizardStep__circle--active")) return;
 
-  step1.addEventListener("click", (e) => {
-    if (isWizardLocked) return;
-    if (visitedSteps.has("step1") && !step1.classList.contains("wizardStep__circle--active")) {
-      e.preventDefault();
-      captureActiveStepValues();
-      renderStep1();
+    if (isWizardLocked && targetStep !== 4) {
+      showWizardModal("The competition entry process is now complete. You can no longer change any details.");
+      return;
     }
-  });
 
-  step2.addEventListener("click", (e) => {
-    if (isWizardLocked) return;
-    if (visitedSteps.has("step2")) {
-      e.preventDefault();
-      captureActiveStepValues();
-      renderStep2();
+    if (targetStep === 2 && !step1Complete) {
+      showWizardModal(
+        `To continue to step 2, please first confirm you have read the rules then ${getClickTapLabel()} "Continue to enter details" at the bottom of Step 1.`,
+      );
+      return;
     }
-  });
 
-  step3.addEventListener("click", (e) => {
-    if (isWizardLocked) return;
-    if (visitedSteps.has("step3")) {
-      e.preventDefault();
-      captureActiveStepValues();
-      renderStep3();
+    if (targetStep === 3 && !step2Complete) {
+      showWizardModal(
+        `To continue to step 3, please first enter your personal details and the number of books you're entering, then ${getClickTapLabel()} "Continue to enter card and pay" at the bottom of Step 2.`,
+      );
+      return;
     }
-  });
 
-  step4.addEventListener("click", (e) => {
-    if (isWizardLocked) return;
-    if (visitedSteps.has("step4")) {
-      e.preventDefault();
-      captureActiveStepValues();
-      renderStep4();
+    if (targetStep === 4 && !step3Complete) {
+      showWizardModal(
+        `To continue to step 4, please enter all card details then ${getClickTapLabel()} "Pay ${getPaymentAmount()} and continue" at the bottom of Step 3.`,
+      );
+      return;
     }
-  });
+
+    captureActiveStepValues();
+    if (targetStep === 1) renderStep1();
+    if (targetStep === 2) renderStep2();
+    if (targetStep === 3) renderStep3();
+    if (targetStep === 4) renderStep4();
+  };
+
+  if (isDemoMode) setDemoValues();
+  renderStep1(false);
+
+  step1.addEventListener("click", () => handleStepClick(1));
+  step1Label?.addEventListener("click", () => handleStepClick(1));
+  step2.addEventListener("click", () => handleStepClick(2));
+  step2Label?.addEventListener("click", () => handleStepClick(2));
+  step3.addEventListener("click", () => handleStepClick(3));
+  step3Label?.addEventListener("click", () => handleStepClick(3));
+  step4.addEventListener("click", () => handleStepClick(4));
+  step4Label?.addEventListener("click", () => handleStepClick(4));
 }
 
 async function initSite() {

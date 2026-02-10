@@ -1,7 +1,7 @@
 <aside id="newsletter" class="newsletter sketch-card" aria-label="Newsletter sign-up">
   <h2 class="cardTitle">Newsletter</h2>
   <p class="muted">Want to be kept informed? No spam - just relevant updates.</p>
-  <form id="newsletter-form" class="form" action="#" method="post">
+  <form id="newsletter-form" class="form" action="#" method="post" novalidate>
     <label class="label" for="email">Email</label>
     <input
       id="email"
@@ -16,6 +16,9 @@
       <span class="btn__spinner" aria-hidden="true"></span>
       <span class="btn__label">Sign up</span>
     </button>
+    <p class="formError" data-newsletter-error role="alert" hidden>
+      Please enter a valid email address before continuing.
+    </p>
     <p class="fineprint">By signing up, you agree to receive emails. You can unsubscribe at any time.</p>
   </form>
 </aside>

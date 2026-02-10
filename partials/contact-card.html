@@ -1,7 +1,7 @@
 <aside id="contact-form" class="contactCard sketch-card" aria-label="Contact form">
   <h2 class="cardTitle">Contact Us</h2>
   <p class="muted">Send us a message and we’ll get back to you.</p>
-  <form class="form" action="#" method="post">
+  <form class="form" action="#" method="post" novalidate>
     <label class="label" for="contact-name">Name</label>
     <input id="contact-name" name="name" type="text" autocomplete="name" required />
 
@@ -16,6 +16,9 @@
       <span>Sign me up to your newsletter</span>
     </label>
 
+    <p class="formError" data-contact-error role="alert" hidden>
+      Please complete all required fields before continuing.
+    </p>
     <button id="contact-submit" class="btn btn--full" type="submit">
       <span class="btn__spinner" aria-hidden="true"></span>
       <span class="btn__label">Send message</span>

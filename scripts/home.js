@@ -3,14 +3,23 @@ function initNewsletterSignup() {
   const newsletterForm = document.getElementById("newsletter-form");
   const emailInput = document.getElementById("email");
   const submitBtn = document.getElementById("newsletter-submit");
+  const errorEl = newsletterForm?.querySelector("[data-newsletter-error]");
 
   if (!newsletterEl || !newsletterForm || !emailInput || !submitBtn) return;
+
+  emailInput.addEventListener("input", () => {
+    if (errorEl) errorEl.hidden = true;
+  });
 
   newsletterForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (typeof emailInput.reportValidity === "function" && !emailInput.reportValidity()) return;
-    if (!emailInput.checkValidity()) return;
+    if (!emailInput.checkValidity()) {
+      if (errorEl) errorEl.hidden = false;
+      emailInput.focus();
+      return;
+    }
+    if (errorEl) errorEl.hidden = true;
 
     const emailAddress = String(emailInput.value || "").trim();
     const capturedEmailAddress = emailAddress;
@@ -51,15 +60,24 @@ function initContactForm() {
   const emailInput = document.getElementById("contact-email");
   const newsletterCheckbox = document.getElementById("contact-newsletter");
   const submitBtn = document.getElementById("contact-submit") || contactCard.querySelector("button[type=\"submit\"]");
+  const errorEl = contactCard.querySelector("[data-contact-error]");
 
   if (!form || !emailInput || !submitBtn) return;
+
+  form.addEventListener("input", () => {
+    if (errorEl) errorEl.hidden = true;
+  });
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     // Validate all required fields (name/email/message)
-    if (typeof form.reportValidity === "function" && !form.reportValidity()) return;
-    if (!form.checkValidity()) return;
+    if (!form.checkValidity()) {
+      if (errorEl) errorEl.hidden = false;
+      form.querySelector(":invalid")?.focus();
+      return;
+    }
+    if (errorEl) errorEl.hidden = true;
 
     const emailAddress = String(emailInput.value || "").trim();
     const wantsNewsletter = Boolean(newsletterCheckbox && newsletterCheckbox.checked);

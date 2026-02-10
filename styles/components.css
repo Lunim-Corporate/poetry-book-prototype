@@ -425,6 +425,14 @@ textarea:focus {
 }
 
 .wizardStep__circle--visited:not(.wizardStep__circle--active) {
+  background: #e6f2ff;
+}
+
+.wizardStep__circle--visited:not(.wizardStep__circle--active):not(.wizardStep__circle--clickable) {
+  color: var(--muted);
+}
+
+.wizardStep__circle--visited.wizardStep__circle--locked {
   background: #f1f1f1;
   color: var(--muted);
 }
@@ -444,6 +452,10 @@ textarea:focus {
   text-align: center;
 }
 
+.wizardStep__label--clickable {
+  cursor: pointer;
+}
+
 .wizardSteps__qr {
   width: 120px;
   height: 120px;
@@ -459,16 +471,27 @@ textarea:focus {
   display: block;
 }
 
-.wizardSteps__labelRow {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+.wizardSteps__labelGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 1.5rem;
   margin: 0.6rem 0 1rem;
+  padding: 1rem;
+  border: 2px dashed rgba(16, 16, 16, 0.45);
+  border-radius: var(--radius);
 }
 
 .wizardSteps__labelInfo h3 {
   margin-top: 0;
+}
+
+.wizardSteps__labelPayment h3 {
+  margin: 0 0 0.75rem;
+}
+
+.wizardSteps__labelNumber {
+  margin: 0.75rem 0 0;
+  font-weight: 800;
 }
 
 .wizardSteps__form {
@@ -482,6 +505,17 @@ textarea:focus {
   text-decoration: underline;
 }
 
+.wizardSteps__confirm {
+  margin: 0.5rem 0 0.85rem;
+}
+
+.formError,
+.wizardSteps__error {
+  margin: 0 0 0.85rem;
+  color: #8b1e1e;
+  font-weight: 700;
+}
+
 .wizardSteps__info {
   margin: 0 0 0.85rem;
   padding: 0.7rem 0.85rem;
@@ -491,11 +525,54 @@ textarea:focus {
   font-weight: 700;
 }
 
+.wizardModal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wizardModal[hidden] {
+  display: none;
+}
+
+.wizardModal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.wizardModal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(480px, 90vw);
+  padding: 1.25rem 1.4rem;
+  background: #fff;
+  border: 2px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.wizardModal__message {
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.wizardModal__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .wizardStep__labelText--mobile {
   display: none;
 }
 
 @media (max-width: 728px) {
+  .wizardSteps__labelGrid {
+    grid-template-columns: 1fr;
+  }
   .wizardSteps {
     padding: 0 16px 0 16px;
   }  
