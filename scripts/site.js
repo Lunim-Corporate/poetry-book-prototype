@@ -276,10 +276,10 @@ function initEntryWizard() {
   const step3 = document.querySelector(".wizardStep__circle--step3");
   const step4 = document.querySelector(".wizardStep__circle--step4");
   const stepsCircles = document.querySelector(".wizardSteps__circles");
-  const step1Label = step1?.closest(".wizardStep")?.querySelector(".wizardStep__label");
-  const step2Label = step2?.closest(".wizardStep")?.querySelector(".wizardStep__label");
-  const step3Label = step3?.closest(".wizardStep")?.querySelector(".wizardStep__label");
-  const step4Label = step4?.closest(".wizardStep")?.querySelector(".wizardStep__label");
+  const step1Wrap = step1?.closest(".wizardStep");
+  const step2Wrap = step2?.closest(".wizardStep");
+  const step3Wrap = step3?.closest(".wizardStep");
+  const step4Wrap = step4?.closest(".wizardStep");
   const line1 = document.querySelector(".wizardSteps__line1");
   const line2 = document.querySelector(".wizardSteps__line2");
   const line3 = document.querySelector(".wizardSteps__line3");
@@ -416,14 +416,10 @@ function initEntryWizard() {
     const step2Clickable = !step2Active;
     const step3Clickable = !step3Active;
     const step4Clickable = !step4Active;
-    step1.classList.toggle("wizardStep__circle--clickable", step1Clickable);
-    step2.classList.toggle("wizardStep__circle--clickable", step2Clickable);
-    step3.classList.toggle("wizardStep__circle--clickable", step3Clickable);
-    step4.classList.toggle("wizardStep__circle--clickable", step4Clickable);
-    step1Label?.classList.toggle("wizardStep__label--clickable", step1Clickable);
-    step2Label?.classList.toggle("wizardStep__label--clickable", step2Clickable);
-    step3Label?.classList.toggle("wizardStep__label--clickable", step3Clickable);
-    step4Label?.classList.toggle("wizardStep__label--clickable", step4Clickable);
+    step1Wrap?.classList.toggle("wizardStep--clickable", step1Clickable);
+    step2Wrap?.classList.toggle("wizardStep--clickable", step2Clickable);
+    step3Wrap?.classList.toggle("wizardStep--clickable", step3Clickable);
+    step4Wrap?.classList.toggle("wizardStep--clickable", step4Clickable);
     step1.classList.toggle("wizardStep__circle--visited", visitedSteps.has("step1"));
     step2.classList.toggle("wizardStep__circle--visited", visitedSteps.has("step2"));
     step3.classList.toggle("wizardStep__circle--visited", visitedSteps.has("step3"));
@@ -808,14 +804,10 @@ function initEntryWizard() {
   if (isDemoMode) setDemoValues();
   renderStep1(false);
 
-  step1.addEventListener("click", () => handleStepClick(1));
-  step1Label?.addEventListener("click", () => handleStepClick(1));
-  step2.addEventListener("click", () => handleStepClick(2));
-  step2Label?.addEventListener("click", () => handleStepClick(2));
-  step3.addEventListener("click", () => handleStepClick(3));
-  step3Label?.addEventListener("click", () => handleStepClick(3));
-  step4.addEventListener("click", () => handleStepClick(4));
-  step4Label?.addEventListener("click", () => handleStepClick(4));
+  step1Wrap?.addEventListener("click", () => handleStepClick(1));
+  step2Wrap?.addEventListener("click", () => handleStepClick(2));
+  step3Wrap?.addEventListener("click", () => handleStepClick(3));
+  step4Wrap?.addEventListener("click", () => handleStepClick(4));
 }
 
 async function initSite() {

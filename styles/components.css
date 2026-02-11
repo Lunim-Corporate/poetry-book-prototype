@@ -392,10 +392,17 @@ textarea:focus {
   position: relative;
 }
 
+.wizardStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .wizardSteps__line {
   position: absolute;
   height: 0;
   border-top: 2px dotted rgba(16, 16, 16, 0.5);
+  top: 55px
 }
 
 .wizardSteps__line--complete {
@@ -416,10 +423,10 @@ textarea:focus {
   color: var(--ink);
   text-align: center;
   line-height: 1.1;
-  cursor: default;
+  cursor: hand;
 }
 
-.wizardStep__circle--clickable {
+.wizardStep--clickable {
   cursor: pointer;
 }
 
@@ -434,7 +441,7 @@ textarea:focus {
   background: #e6f2ff;
 }
 
-.wizardStep__circle--visited:not(.wizardStep__circle--active):not(.wizardStep__circle--clickable) {
+.wizardStep:not(.wizardStep--clickable) .wizardStep__circle--visited:not(.wizardStep__circle--active) {
   color: var(--muted);
 }
 
@@ -458,9 +465,14 @@ textarea:focus {
   text-align: center;
 }
 
-.wizardStep__label--clickable {
-  cursor: pointer;
+.wizardStep__stepLabel {
+  display: block;
+  margin-bottom: 0.35rem;
+  text-align: center;
+  font-weight: 800;
+  color: var(--ink);
 }
+
 
 .wizardSteps__qr {
   width: 120px;
@@ -635,24 +647,21 @@ textarea:focus {
   .wizardSteps__line1 {
     left: 33px;
     right: 66%;
-    top: 33px;
   }
   .wizardSteps__line2 {
     left: 33%;
     right: 33%;
-    top: 33px;
   }
   .wizardSteps__line3 {
     left: 66%;
     right: 33px;
-    top: 33px;
   }
   .wizardStep {
     flex: 0 0 66px;
   }
   .wizardStep__circle {
-    width: 66px;
-    height: 66px;
+    width: 24px;
+    height: 24px;
   }
   .wizardStep__labelText--desktop {
     display: none;
@@ -665,30 +674,33 @@ textarea:focus {
 }
 
 @media (min-width: 729px) {
+  .wizardSteps__line {
+    top: 59px;
+  }
   .wizardSteps__line1 {
     left: 48px;
     right: 66%;
-    top: 48px;
+  }
+  .wizardSteps__line1 {
+    left: 48px;
+    right: 66%;
   }
   .wizardSteps__line2 {
     left: 33%;
     right: 33%;
-    top: 48px;
   }
   .wizardSteps__line3 {
     left: 66%;
     right: 48px;
-    top: 48px;
   }
   .wizardStep {
     flex: 0 0 96px;
   }
   .wizardStep__circle {
-    width: 96px;
-    height: 96px;
+    width: 32px;
+    height: 32px;
   }
   .wizardStep__label {
-    margin-left: -30px;
     width: calc(100% + 60px);
   }
 }
