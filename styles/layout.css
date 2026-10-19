@@ -241,6 +241,14 @@
   .aboutCol > h3:first-child {
     margin-top: 0;
   }
+
+  .two-col--home .aboutColumns {
+    grid-template-columns: 1fr;
+  }
+
+  .two-col--home .aboutColumns::before {
+    content: none;
+  }
 }
 
 .contentCta {
